@@ -183,12 +183,10 @@ EOL
 mkdir -p .cargo
 cat > .cargo/config.toml << 'EOL'
 [target.wasm32-unknown-unknown.dev]
-rustflags = [
-   "--cfg",
-   "erase_components",
-]
+rustflags = "--cfg erase_components"
+
 [target.wasm32-unknown-unknown]
-rustflags = ["--cfg=web_sys_unstable_apis"]
+rustflags = "--cfg=web_sys_unstable_apis"
 
 [build]
 target = "wasm32-unknown-unknown"
