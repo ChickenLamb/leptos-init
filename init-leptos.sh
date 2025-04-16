@@ -8,6 +8,15 @@ check_command() {
     fi
 }
 
+# Set default project path to current directory if not provided
+PROJECT_PATH="${1:-.}"
+
+# Check if directory already exists and is not empty
+if [ -d "$PROJECT_PATH" ] && [ "$(ls -A "$PROJECT_PATH" 2>/dev/null)" ]; then
+    echo "Error: Directory '$PROJECT_PATH' is not empty"
+    exit 1
+fi
+
 # Check for required commands
 check_command cargo
 check_command rustup
@@ -24,8 +33,8 @@ rustup target add wasm32-unknown-unknown
 
 # Create new project
 echo "Creating new Leptos project..."
-cargo new leptos-app
-cd leptos-app
+cargo new "$PROJECT_PATH"
+cd "$PROJECT_PATH"
 
 # Add dependencies
 echo "Adding dependencies..."
@@ -186,7 +195,8 @@ target = "wasm32-unknown-unknown"
 EOL
 
 echo "Leptos project initialized successfully!"
-echo "Run 'trunk serve' to start the development server."
+echo "Navigate to the project directory: cd $PROJECT_PATH"
+echo "Start the development server: trunk serve --open"
 
 # Create readme.md
 cat > README.md << 'EOL'
@@ -234,5 +244,4 @@ Ensure you have the following installed:
 EOL
 
 echo "Leptos project initialized successfully!"
-echo "Navigate to the project directory: cd leptos-app"
-echo "Start the development server: trunk serve --open"
+
